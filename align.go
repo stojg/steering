@@ -2,11 +2,11 @@ package steering
 
 import (
 	. "github.com/stojg/vivere/lib/components"
-	. "github.com/stojg/vivere/lib/vector"
+	"github.com/stojg/vector"
 	"math"
 )
 
-func NewAlign(m *Model, b *RigidBody, target *Quaternion, targetRadius, slowRadius float64) *Align {
+func NewAlign(m *Model, b *RigidBody, target *vector.Quaternion, targetRadius, slowRadius float64) *Align {
 	return &Align{
 		model:        m,
 		body:         b,
@@ -20,7 +20,7 @@ func NewAlign(m *Model, b *RigidBody, target *Quaternion, targetRadius, slowRadi
 type Align struct {
 	model        *Model
 	body         *RigidBody
-	target       *Quaternion
+	target       *vector.Quaternion
 	targetRadius float64 // 0.02
 	slowRadius   float64 // 0.1
 }
@@ -32,7 +32,7 @@ func (align *Align) Get() *SteeringOutput {
 
 	steering := NewSteeringOutput()
 
-	invInitial := &Quaternion{
+	invInitial := &vector.Quaternion{
 		R: align.model.Orientation().R,
 		I: -align.model.Orientation().I,
 		J: -align.model.Orientation().J,
@@ -51,7 +51,7 @@ func (align *Align) Get() *SteeringOutput {
 	theta := 2 * math.Acos(q.R)
 
 	sin := 1 / (math.Sin(theta / 2))
-	axis := &Vector3{
+	axis := &vector.Vector3{
 		sin * q.I,
 		sin * q.J,
 		sin * q.K,

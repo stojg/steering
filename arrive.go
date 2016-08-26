@@ -2,10 +2,10 @@ package steering
 
 import (
 	. "github.com/stojg/vivere/lib/components"
-	. "github.com/stojg/vivere/lib/vector"
+	"github.com/stojg/vector"
 )
 
-func NewArrive(m *Model, b *RigidBody, target *Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
+func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
 	return &Arrive{
 		model:        m,
 		body:         b,
@@ -20,7 +20,7 @@ func NewArrive(m *Model, b *RigidBody, target *Vector3, maxSpeed, targetRadius, 
 type Arrive struct {
 	model        *Model
 	body         *RigidBody
-	target       *Vector3
+	target       *vector.Vector3
 	targetRadius float64
 	slowRadius   float64
 	maxSpeed     float64

@@ -24,7 +24,7 @@ type Steering interface {
 //	steering.linear = s.character.Position.NewSub(s.target.Position)
 //	steering.linear.Normalize()
 //	steering.linear.NewHadamardProduct(s.character.MaxAcceleration)
-//	steering.angular = &Vector3{}
+//	steering.angular = &vector.Vector3{}
 //	return steering
 //}
 
@@ -33,7 +33,7 @@ type Steering interface {
 //	character *BodyComponent
 //	// Holds the radius and offset of the wander circle. The
 //	// offset is now a full 3D vector
-//	offset         *Vector3
+//	offset         *vector.Vector3
 //	WanderRadiusXZ float64
 //	WanderRadiusY  float64
 //
@@ -43,26 +43,26 @@ type Steering interface {
 //	rate float64
 //
 //	// Holds the current offset of the wander target
-//	Vector *Vector3
+//	Vector *vector.Vector3
 //
 //	// holds the max acceleration for this character, this
 //	// again should be a 3D vector, typically with only a
 //	// non zero z value
-//	maxAcceleration *Vector3
+//	maxAcceleration *vector.Vector3
 //}
 //
 //// NewWander returns a new Wander behaviour
 //func NewWander(character *BodyComponent, offset, radiusXZ, radiusY, rate float64) *Wander {
 //	w := &Wander{}
 //	w.character = character
-//	w.offset = &Vector3{offset, 0, 0}
+//	w.offset = &vector.Vector3{offset, 0, 0}
 //	w.WanderRadiusXZ = radiusXZ
 //	w.WanderRadiusY = radiusY
 //	w.rate = rate
 //
-//	w.maxAcceleration = &Vector3{1, 0, 0}
+//	w.maxAcceleration = &vector.Vector3{1, 0, 0}
 //	// start by wandering straight forward
-//	w.Vector = &Vector3{1, 0, 0}
+//	w.Vector = &vector.Vector3{1, 0, 0}
 //
 //	return w
 //}
@@ -136,10 +136,10 @@ type Steering interface {
 //}
 //
 //type Path struct {
-//	points []*Vector3
+//	points []*vector.Vector3
 //}
 //
-//func (p *Path) getParam(position *Vector3, lastparam int) int {
+//func (p *Path) getParam(position *vector.Vector3, lastparam int) int {
 //	closest := 0
 //	distance := math.MaxFloat64
 //	for i := range p.points {
@@ -152,7 +152,7 @@ type Steering interface {
 //	return closest
 //}
 //
-//func (p *Path) getPosition(param int) *Vector3 {
+//func (p *Path) getPosition(param int) *vector.Vector3 {
 //	if param > len(p.points)-1 {
 //		param = len(p.points) - 1
 //	}
@@ -161,7 +161,7 @@ type Steering interface {
 //	}
 //	if len(p.points) == 0 {
 //		Println("Getting a request for a Path.getPosition when Path.points is empty")
-//		return &Vector3{0, 0, 0}
+//		return &vector.Vector3{0, 0, 0}
 //	}
 //
 //	//fmt.Println(param, len(p.points))

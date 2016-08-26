@@ -2,17 +2,17 @@ package steering
 
 import (
 	. "github.com/stojg/vivere/lib/components"
-	. "github.com/stojg/vivere/lib/vector"
+	"github.com/stojg/vector"
 	"math"
 )
 
-//func NewArrive(m *Model, b *RigidBody, target *Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
-func NewFace(m *Model, b *RigidBody, target *Vector3) *Face {
+//func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
+func NewFace(m *Model, b *RigidBody, target *vector.Vector3) *Face {
 	return &Face{
 		model:           m,
 		body:            b,
 		target:          target,
-		baseOrientation: NewQuaternion(1, 0, 0, 0),
+		baseOrientation: vector.NewQuaternion(1, 0, 0, 0),
 	}
 }
 
@@ -20,9 +20,9 @@ func NewFace(m *Model, b *RigidBody, target *Vector3) *Face {
 type Face struct {
 	model  *Model
 	body   *RigidBody
-	target *Vector3
+	target *vector.Vector3
 	// @todo fix
-	baseOrientation *Quaternion
+	baseOrientation *vector.Quaternion
 }
 
 // GetSteering returns a angular steering
@@ -43,22 +43,22 @@ func (face *Face) Get() *SteeringOutput {
 	return align.Get()
 }
 
-func (face *Face) calculateOrientation(vector *Vector3) *Quaternion {
-	vector.Normalize()
+func (face *Face) calculateOrientation(a *vector.Vector3) *vector.Quaternion {
+	a.Normalize()
 
-	baseZVector := VectorX().Rotate(face.baseOrientation)
+	baseZVector := vector.VectorX().Rotate(face.baseOrientation)
 
-	if baseZVector.Equals(vector) {
+	if baseZVector.Equals(a) {
 		return face.baseOrientation.Clone()
 	}
-	if baseZVector.Equals(vector.NewInverse()) {
+	if baseZVector.Equals(a.NewInverse()) {
 		// @todo need to fix this is the base orientation isn't 1,0,0,0?
-		return NewQuaternion(0, 0, 1, 0)
+		return vector.NewQuaternion(0, 0, 1, 0)
 	}
 
 	// find the minimal rotation from the base to the target
-	angle := math.Acos(baseZVector.Dot(vector))
-	axis := baseZVector.NewCross(vector).Normalize()
+	angle := math.Acos(baseZVector.Dot(a))
+	axis := baseZVector.NewCross(a).Normalize()
 
-	return QuaternionFromAxisAngle(axis, angle)
+	return vector.QuaternionFromAxisAngle(axis, angle)
 }

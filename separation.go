@@ -2,11 +2,10 @@ package steering
 
 import (
 	. "github.com/stojg/vivere/lib/components"
-	. "github.com/stojg/vivere/lib/vector"
-	//"math"
+	"github.com/stojg/vector"
 )
 
-func NewSeparation(m *Model, b *RigidBody, targets []*Vector3 , threshold float64) *Separation {
+func NewSeparation(m *Model, b *RigidBody, targets []*vector.Vector3 , threshold float64) *Separation {
 	return &Separation{
 		model: m,
 		body: b,
@@ -19,7 +18,7 @@ func NewSeparation(m *Model, b *RigidBody, targets []*Vector3 , threshold float6
 type Separation struct {
 	model        *Model
 	body         *RigidBody
-	targets     []*Vector3
+	targets     []*vector.Vector3
 	threshold float64
 	decayCoefficient float64
 }
