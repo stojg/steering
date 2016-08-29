@@ -1,8 +1,8 @@
 package steering
 
 import (
-	. "github.com/stojg/vivere/lib/components"
 	"github.com/stojg/vector"
+	. "github.com/stojg/vivere/lib/components"
 )
 
 func NewSeek(model *Model, body *RigidBody, target *vector.Vector3) *Seek {
@@ -29,6 +29,5 @@ func (s *Seek) Get() *SteeringOutput {
 	// Go full speed ahead
 	steering.linear.Normalize()
 	steering.linear.HadamardProduct(s.body.MaxAcceleration)
-	steering.angular = &vector.Vector3{}
 	return steering
 }

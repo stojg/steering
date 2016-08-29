@@ -1,8 +1,8 @@
 package steering
 
 import (
-	. "github.com/stojg/vivere/lib/components"
 	"github.com/stojg/vector"
+	. "github.com/stojg/vivere/lib/components"
 )
 
 func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
@@ -49,19 +49,19 @@ func (s *Arrive) Get() *SteeringOutput {
 	}
 
 	// The target velocity combines speed and direction
-	targetVelocity := direction
-	targetVelocity.Normalize()
-	targetVelocity.Scale(targetSpeed)
+	direction.Normalize()
+	direction.Scale(targetSpeed)
 
 	// Acceleration tries to get to the target velocity
-	steering.linear = targetVelocity.NewSub(s.body.Velocity)
-	steering.linear.Scale(1 / timeToTarget)
+	direction.NewSub(s.body.Velocity)
+	direction.Scale(1 / timeToTarget)
 
 	// check if acceleration is to fast
-	if steering.linear.SquareLength() > s.body.MaxAcceleration.SquareLength() {
-		steering.linear.Normalize()
-		steering.linear.Scale(s.body.MaxAcceleration.Length())
+	if direction.SquareLength() > s.body.MaxAcceleration.SquareLength() {
+		direction.Normalize()
+		direction.Scale(s.body.MaxAcceleration.Length())
 	}
 
+	steering.linear = direction
 	return steering
 }

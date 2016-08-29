@@ -33,7 +33,3 @@ func (s *SteeringOutput) SetAngular(val *vector.Vector3) {
 func (s *SteeringOutput) Angular() *vector.Vector3 {
 	return s.angular
 }
-
-
-
-

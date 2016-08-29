@@ -1,8 +1,8 @@
 package steering
 
 import (
-	. "github.com/stojg/vivere/lib/components"
 	"github.com/stojg/vector"
+	. "github.com/stojg/vivere/lib/components"
 	"math"
 )
 
@@ -16,7 +16,7 @@ func NewFace(m *Model, b *RigidBody, target *vector.Vector3) *Face {
 	}
 }
 
-// Face turns the character so it 'looks' at the target
+// Face turns the character so wit 'looks' at the target
 type Face struct {
 	model  *Model
 	body   *RigidBody

@@ -1,8 +1,8 @@
 package steering
 
 import (
-	. "github.com/stojg/vivere/lib/components"
 	"github.com/stojg/vector"
+	. "github.com/stojg/vivere/lib/components"
 	"math"
 )
 
@@ -50,7 +50,7 @@ func (align *Align) Get() *SteeringOutput {
 
 	theta := 2 * math.Acos(q.R)
 
-	sin := 1 / (math.Sin(theta / 2))
+	sin := 1 / math.Sin(theta/2)
 	axis := &vector.Vector3{
 		sin * q.I,
 		sin * q.J,
