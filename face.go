@@ -46,7 +46,7 @@ func (face *Face) Get() *SteeringOutput {
 func (face *Face) calculateOrientation(a *vector.Vector3) *vector.Quaternion {
 	a.Normalize()
 
-	baseZVector := vector.VectorX().Rotate(face.baseOrientation)
+	baseZVector := vector.X().Rotate(face.baseOrientation)
 
 	if baseZVector.Equals(a) {
 		return face.baseOrientation.Clone()
