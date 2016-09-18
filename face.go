@@ -2,15 +2,13 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	. "github.com/stojg/vivere/lib/components"
 	"math"
 )
 
 //func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
-func NewFace(m *Model, b *RigidBody, target *vector.Vector3) *Face {
+func NewFace(char Body, target *vector.Vector3) *Face {
 	return &Face{
-		model:           m,
-		body:            b,
+		char:           char,
 		target:          target,
 		baseOrientation: vector.NewQuaternion(1, 0, 0, 0),
 	}
@@ -18,9 +16,8 @@ func NewFace(m *Model, b *RigidBody, target *vector.Vector3) *Face {
 
 // Face turns the character so wit 'looks' at the target
 type Face struct {
-	model  *Model
-	body   *RigidBody
-	target *vector.Vector3
+	char            Body
+	target          *vector.Vector3
 	// @todo fix
 	baseOrientation *vector.Quaternion
 }
@@ -31,7 +28,7 @@ func (face *Face) Get() *SteeringOutput {
 	// 1. Calculate the target to delegate to align
 
 	// Work out the direction to target
-	direction := face.target.NewSub(face.model.Position())
+	direction := face.target.NewSub(face.char.Position())
 
 	// Check for zero direction
 	if direction.SquareLength() == 0 {
@@ -39,7 +36,7 @@ func (face *Face) Get() *SteeringOutput {
 	}
 
 	orientation := face.calculateOrientation(direction)
-	align := NewAlign(face.model, face.body, orientation, 0.1, 1)
+	align := NewAlign(face.char, orientation, 0.1, 1)
 	return align.Get()
 }
 

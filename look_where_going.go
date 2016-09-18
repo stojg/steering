@@ -1,27 +1,25 @@
 package steering
 
 import (
-	. "github.com/stojg/vivere/lib/components"
 )
 
-func NewLookWhereYoureGoing(character *RigidBody, cbody *Model) *LookWhereYoureGoing {
+
+func NewLookWhereYoureGoing(character Body) *LookWhereYoureGoing {
 	return &LookWhereYoureGoing{
-		model: character,
-		cbody: cbody,
+		char: character,
 	}
 }
 
 // LookWhereYoureGoing turns the character so it faces the direction the character is moving
 type LookWhereYoureGoing struct {
-	model *RigidBody
-	cbody *Model
+	char Body
 }
 
 // GetSteering returns a angular steering
 func (s *LookWhereYoureGoing) Get() *SteeringOutput {
-	if s.model.Velocity.Length() == 0 {
+	if s.char.Velocity().Length() == 0 {
 		return NewSteeringOutput()
 	}
-	face := NewFace(s.cbody, s.model, s.model.Velocity.NewAdd(s.cbody.Position()))
+	face := NewFace(s.char, s.char.Velocity().NewAdd(s.char.Position()))
 	return face.Get()
 }

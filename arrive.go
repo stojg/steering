@@ -2,13 +2,11 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	. "github.com/stojg/vivere/lib/components"
 )
 
-func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
+func NewArrive(source Body, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
 	return &Arrive{
-		model:        m,
-		body:         b,
+		object:         source,
 		target:       target,
 		targetRadius: targetRadius,
 		slowRadius:   slowRadius,
@@ -18,8 +16,7 @@ func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetR
 
 // Arrive tries to get the character to arrive slowly at a target
 type Arrive struct {
-	model        *Model
-	body         *RigidBody
+	object       Body
 	target       *vector.Vector3
 	targetRadius float64
 	slowRadius   float64
@@ -32,7 +29,7 @@ func (s *Arrive) Get() *SteeringOutput {
 
 	steering := NewSteeringOutput()
 
-	direction := s.target.NewSub(s.model.Position())
+	direction := s.target.NewSub(s.object.Position())
 	distance := direction.Length()
 
 	// We have arrived, no output
@@ -53,13 +50,13 @@ func (s *Arrive) Get() *SteeringOutput {
 	direction.Scale(targetSpeed)
 
 	// Acceleration tries to get to the target velocity
-	direction.NewSub(s.body.Velocity)
+	direction.NewSub(s.object.Velocity())
 	direction.Scale(1 / timeToTarget)
 
 	// check if acceleration is to fast
-	if direction.SquareLength() > s.body.MaxAcceleration.SquareLength() {
+	if direction.SquareLength() > s.object.MaxAcceleration().SquareLength() {
 		direction.Normalize()
-		direction.Scale(s.body.MaxAcceleration.Length())
+		direction.Scale(s.object.MaxAcceleration().Length())
 	}
 
 	steering.linear = direction

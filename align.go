@@ -2,14 +2,21 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	. "github.com/stojg/vivere/lib/components"
 	"math"
 )
 
-func NewAlign(m *Model, b *RigidBody, target *vector.Quaternion, targetRadius, slowRadius float64) *Align {
+type Body interface{
+	Position() *vector.Vector3
+	Velocity() *vector.Vector3
+	MaxAcceleration() *vector.Vector3
+	Orientation() *vector.Quaternion
+	MaxRotation() float64
+	Rotation() *vector.Vector3
+}
+
+func NewAlign(c Body, target *vector.Quaternion, targetRadius, slowRadius float64) *Align {
 	return &Align{
-		model:        m,
-		body:         b,
+		char:        c,
 		target:       target,
 		targetRadius: targetRadius,
 		slowRadius:   slowRadius,
@@ -18,8 +25,7 @@ func NewAlign(m *Model, b *RigidBody, target *vector.Quaternion, targetRadius, s
 
 // Align ensures that the character have the same orientation as the target
 type Align struct {
-	model        *Model
-	body         *RigidBody
+	char         Body
 	target       *vector.Quaternion
 	targetRadius float64 // 0.02
 	slowRadius   float64 // 0.1
@@ -33,10 +39,10 @@ func (align *Align) Get() *SteeringOutput {
 	steering := NewSteeringOutput()
 
 	invInitial := &vector.Quaternion{
-		R: align.model.Orientation().R,
-		I: -align.model.Orientation().I,
-		J: -align.model.Orientation().J,
-		K: -align.model.Orientation().K,
+		R: align.char.Orientation().R,
+		I: -align.char.Orientation().I,
+		J: -align.char.Orientation().J,
+		K: -align.char.Orientation().K,
 	}
 
 	q := align.target.NewMultiply(invInitial)
@@ -66,16 +72,16 @@ func (align *Align) Get() *SteeringOutput {
 
 	var targetRotation float64
 	if thetaNoSign > align.slowRadius {
-		targetRotation = align.body.MaxRotation
+		targetRotation = align.char.MaxRotation()
 	} else {
-		targetRotation = align.body.MaxRotation * (thetaNoSign / align.slowRadius)
+		targetRotation = align.char.MaxRotation() * (thetaNoSign / align.slowRadius)
 	}
 
 	targetRotation *= theta / thetaNoSign
 
 	axis.Normalize()
 	axis.Scale(targetRotation)
-	axis.Sub(align.body.Rotation)
+	axis.Sub(align.char.Rotation())
 	axis.Scale(1 / timeToTarget)
 
 	steering.angular = axis
