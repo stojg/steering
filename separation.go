@@ -2,13 +2,21 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	. "github.com/stojg/vivere/lib/components"
 )
 
-func NewSeparation(m *Model, b *RigidBody, targets []*vector.Vector3, threshold float64) *Separation {
+type Body interface{
+	Position() *vector.Vector3
+	Velocity() *vector.Vector3
+	MaxVelocity() float64
+	MaxAcceleration() *vector.Vector3
+	Orientation() *vector.Quaternion
+	MaxRotation() float64
+	Rotation() *vector.Vector3
+}
+
+func NewSeparation(m Body, targets []*vector.Vector3, threshold float64) *Separation {
 	return &Separation{
-		model:            m,
-		body:             b,
+		body:            m,
 		targets:          targets,
 		threshold:        threshold,
 		decayCoefficient: 10000,
@@ -16,8 +24,7 @@ func NewSeparation(m *Model, b *RigidBody, targets []*vector.Vector3, threshold 
 }
 
 type Separation struct {
-	model            *Model
-	body             *RigidBody
+	body            Body
 	targets          []*vector.Vector3
 	threshold        float64
 	decayCoefficient float64
@@ -26,7 +33,7 @@ type Separation struct {
 func (s *Separation) Get() *SteeringOutput {
 	steering := NewSteeringOutput()
 	for _, target := range s.targets {
-		direction := s.model.Position().NewSub(target)
+		direction := s.body.Position().NewSub(target)
 		distance := direction.Length()
 		if distance > s.threshold {
 			continue
@@ -36,7 +43,7 @@ func (s *Separation) Get() *SteeringOutput {
 		//strength := math.Min(s.decayCoefficient / (distance * distance), s.body.MaxAcceleration.Length())
 
 		// linear
-		strength := s.body.MaxAcceleration.Length() * ((s.threshold - distance) / s.threshold)
+		strength := s.body.MaxAcceleration().Length() * ((s.threshold - distance) / s.threshold)
 
 		steering.linear.Add(direction.Normalize().Scale(strength))
 	}

@@ -2,13 +2,11 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	. "github.com/stojg/vivere/lib/components"
 )
 
-func NewSeek(model *Model, body *RigidBody, target *vector.Vector3) *Seek {
+func NewSeek(body Body, target *vector.Vector3) *Seek {
 	s := &Seek{
-		model:  model,
-		body:   body,
+		body:  body,
 		target: target,
 	}
 	return s
@@ -16,8 +14,7 @@ func NewSeek(model *Model, body *RigidBody, target *vector.Vector3) *Seek {
 
 // Seek makes the character to go full speed against the target
 type Seek struct {
-	model  *Model
-	body   *RigidBody
+	body   Body
 	target *vector.Vector3
 }
 
@@ -25,9 +22,9 @@ type Seek struct {
 func (s *Seek) Get() *SteeringOutput {
 	steering := NewSteeringOutput()
 	// Get the direction to the target
-	steering.linear = s.target.NewSub(s.model.Position())
+	steering.linear = s.target.NewSub(s.body.Position())
 	// Go full speed ahead
 	steering.linear.Normalize()
-	steering.linear.HadamardProduct(s.body.MaxAcceleration)
+	steering.linear.HadamardProduct(s.body.MaxAcceleration())
 	return steering
 }

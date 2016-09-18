@@ -5,15 +5,6 @@ import (
 	"math"
 )
 
-type Body interface{
-	Position() *vector.Vector3
-	Velocity() *vector.Vector3
-	MaxAcceleration() *vector.Vector3
-	Orientation() *vector.Quaternion
-	MaxRotation() float64
-	Rotation() *vector.Vector3
-}
-
 func NewAlign(c Body, target *vector.Quaternion, targetRadius, slowRadius float64) *Align {
 	return &Align{
 		char:        c,

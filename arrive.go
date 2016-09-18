@@ -4,13 +4,11 @@ import (
 	"github.com/stojg/vector"
 )
 
-func NewArrive(source Body, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
+func NewArrive(source Body, target *vector.Vector3, slowRadius float64) *Arrive {
 	return &Arrive{
 		object:         source,
 		target:       target,
-		targetRadius: targetRadius,
 		slowRadius:   slowRadius,
-		maxSpeed:     maxSpeed,
 	}
 }
 
@@ -20,12 +18,13 @@ type Arrive struct {
 	target       *vector.Vector3
 	targetRadius float64
 	slowRadius   float64
-	maxSpeed     float64
 }
 
 func (s *Arrive) Get() *SteeringOutput {
 
 	const timeToTarget = 0.1
+	// prevent floating number math to never get to the target
+	const targetRadius = 0.1
 
 	steering := NewSteeringOutput()
 
@@ -40,9 +39,9 @@ func (s *Arrive) Get() *SteeringOutput {
 	// We are outside the slow radius, so full speed ahead
 	var targetSpeed float64
 	if distance > s.slowRadius {
-		targetSpeed = s.maxSpeed
+		targetSpeed = s.object.MaxVelocity()
 	} else {
-		targetSpeed = s.maxSpeed * distance / s.slowRadius
+		targetSpeed = s.object.MaxVelocity() * distance / s.slowRadius
 	}
 
 	// The target velocity combines speed and direction
