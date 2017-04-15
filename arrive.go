@@ -6,9 +6,9 @@ import (
 
 func NewArrive(source Body, target *vector.Vector3, slowRadius float64) *Arrive {
 	return &Arrive{
-		object:         source,
-		target:       target,
-		slowRadius:   slowRadius,
+		object:     source,
+		target:     target,
+		slowRadius: slowRadius,
 	}
 }
 

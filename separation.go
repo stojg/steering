@@ -4,19 +4,9 @@ import (
 	"github.com/stojg/vector"
 )
 
-type Body interface{
-	Position() *vector.Vector3
-	Velocity() *vector.Vector3
-	MaxVelocity() float64
-	MaxAcceleration() *vector.Vector3
-	Orientation() *vector.Quaternion
-	MaxRotation() float64
-	Rotation() *vector.Vector3
-}
-
 func NewSeparation(m Body, targets []*vector.Vector3, threshold float64) *Separation {
 	return &Separation{
-		body:            m,
+		body:             m,
 		targets:          targets,
 		threshold:        threshold,
 		decayCoefficient: 10000,
@@ -24,7 +14,7 @@ func NewSeparation(m Body, targets []*vector.Vector3, threshold float64) *Separa
 }
 
 type Separation struct {
-	body            Body
+	body             Body
 	targets          []*vector.Vector3
 	threshold        float64
 	decayCoefficient float64

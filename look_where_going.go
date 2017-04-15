@@ -1,9 +1,5 @@
 package steering
 
-import (
-)
-
-
 func NewLookWhereYoureGoing(character Body) *LookWhereYoureGoing {
 	return &LookWhereYoureGoing{
 		char: character,

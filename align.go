@@ -7,7 +7,7 @@ import (
 
 func NewAlign(c Body, target *vector.Quaternion, targetRadius, slowRadius float64) *Align {
 	return &Align{
-		char:        c,
+		char:         c,
 		target:       target,
 		targetRadius: targetRadius,
 		slowRadius:   slowRadius,

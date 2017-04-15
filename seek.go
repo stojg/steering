@@ -6,7 +6,7 @@ import (
 
 func NewSeek(body Body, target *vector.Vector3) *Seek {
 	s := &Seek{
-		body:  body,
+		body:   body,
 		target: target,
 	}
 	return s

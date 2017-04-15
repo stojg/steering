@@ -8,7 +8,7 @@ import (
 //func NewArrive(m *Model, b *RigidBody, target *vector.Vector3, maxSpeed, targetRadius, slowRadius float64) *Arrive {
 func NewFace(char Body, target *vector.Vector3) *Face {
 	return &Face{
-		char:           char,
+		char:            char,
 		target:          target,
 		baseOrientation: vector.NewQuaternion(1, 0, 0, 0),
 	}
@@ -16,8 +16,8 @@ func NewFace(char Body, target *vector.Vector3) *Face {
 
 // Face turns the character so wit 'looks' at the target
 type Face struct {
-	char            Body
-	target          *vector.Vector3
+	char   Body
+	target *vector.Vector3
 	// @todo fix
 	baseOrientation *vector.Quaternion
 }

@@ -1,6 +1,7 @@
 package steering
 
 import (
+	"fmt"
 	"github.com/stojg/vector"
 )
 
@@ -32,4 +33,8 @@ func (s *SteeringOutput) SetAngular(val *vector.Vector3) {
 
 func (s *SteeringOutput) Angular() *vector.Vector3 {
 	return s.angular
+}
+
+func (s *SteeringOutput) String() string {
+	return fmt.Sprintf("linear: %s, angular: %s", s.linear, s.angular)
 }

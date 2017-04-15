@@ -2,17 +2,15 @@ package steering
 
 import (
 	"github.com/stojg/vector"
-	"github.com/stojg/vivere/lib/components"
 	"testing"
 )
 
 var arriveSteering *SteeringOutput
 
 func TestArrive_Get(t *testing.T) {
-	model := components.NewModel(10, 10, 10, 1)
-	body := components.NewRidigBody(1)
+	body := newBody()
 	target := vector.NewVector3(100, 0, 100)
-	output := NewArrive(model, body, target, 100, 0.1, 10)
+	output := NewArrive(body, target, 100)
 
 	actual := output.Get()
 	expected := vector.NewVector3(1.224744871391589, 0, 1.224744871391589)
@@ -23,10 +21,9 @@ func TestArrive_Get(t *testing.T) {
 }
 
 func BenchmarkArrive_Get(b *testing.B) {
-	model := components.NewModel(10, 10, 10, 1)
-	body := components.NewRidigBody(1)
+	body := newBody()
 	target := vector.NewVector3(100, 0, 100)
-	output := NewArrive(model, body, target, 100, 0.1, 200)
+	output := NewArrive(body, target, 100)
 
 	var tSteering *SteeringOutput
 	b.ResetTimer()
